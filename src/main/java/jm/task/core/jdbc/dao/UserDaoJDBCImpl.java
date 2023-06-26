@@ -38,7 +38,7 @@ public class UserDaoJDBCImpl implements UserDao {
             preparedStatement.setByte(3, age);
             preparedStatement.execute();
             System.out.println("User с именем – " + name + " добавлен в базу данных");
-        } catch (SQLException | NullPointerException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -52,7 +52,6 @@ public class UserDaoJDBCImpl implements UserDao {
         }
     }
 
-
     public List<User> getAllUsers() {
         List<User> addAllUsers = new ArrayList<>();
         try (Statement statement = connection.createStatement()) {
@@ -65,7 +64,7 @@ public class UserDaoJDBCImpl implements UserDao {
                 user.setAge(resultSet.getByte("age"));
                 addAllUsers.add(user);
             }
-        } catch (SQLException | NullPointerException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         System.out.println(addAllUsers);
@@ -75,7 +74,7 @@ public class UserDaoJDBCImpl implements UserDao {
     public void cleanUsersTable() {
         try (Statement statement = getConnection().createStatement()) {
             statement.execute("TRUNCATE TABLE USER");
-        } catch (SQLException | NullPointerException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
