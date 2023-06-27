@@ -53,7 +53,7 @@ public class User {
     }
 
     public Byte getAge() {
-        return age;
+        return (byte) age;
     }
 
     public void setAge(Byte age) {
