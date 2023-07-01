@@ -23,7 +23,7 @@ public class UserDaoJDBCImpl implements UserDao {
     private Connection connection = getConnection();
 
     public void createUsersTable() {
-        try (Statement statement = getConnection().createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(createUsersTable);
             connection.commit();
         } catch (SQLException e) {
@@ -37,7 +37,7 @@ public class UserDaoJDBCImpl implements UserDao {
     }
 
     public void dropUsersTable() {
-        try (Statement statement = getConnection().createStatement()) {
+        try (Statement statement = connection.createStatement()) {
             statement.execute(dropUsersTable);
             connection.commit();
         } catch (SQLException e) {
@@ -85,26 +85,30 @@ public class UserDaoJDBCImpl implements UserDao {
 
     public List<User> getAllUsers() {
         List<User> addAllUsers = new ArrayList<>();
-        try (Statement statement = connection.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(getAllUsers);
-            while (resultSet.next()) {
-                User user = new User();
-                user.setId(resultSet.getLong("id"));
-                user.setName(resultSet.getString("name"));
-                user.setLastName(resultSet.getString("lastName"));
-                user.setAge(resultSet.getByte("age"));
-                addAllUsers.add(user);
-                System.out.println(user);
+        try {
+            connection.setAutoCommit(true);
+            try (Statement statement = connection.createStatement()) {
+                ResultSet resultSet = statement.executeQuery(getAllUsers);
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setName(resultSet.getString("name"));
+                    user.setLastName(resultSet.getString("lastName"));
+                    user.setAge(resultSet.getByte("age"));
+                    addAllUsers.add(user);
+                    System.out.println(user);
+                }
             }
-            connection.commit();
         } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
             e.printStackTrace();
+        } finally {
+            try {
+                connection.setAutoCommit(false);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
         return addAllUsers;
     }
 
