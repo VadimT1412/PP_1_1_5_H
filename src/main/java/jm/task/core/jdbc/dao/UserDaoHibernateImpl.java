@@ -7,7 +7,6 @@ import org.hibernate.Transaction;
 
 import java.util.List;
 
-
 public class UserDaoHibernateImpl implements UserDao {
     private String createUsersTable = "CREATE TABLE IF NOT EXISTS USER"
             + "(id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY, "
