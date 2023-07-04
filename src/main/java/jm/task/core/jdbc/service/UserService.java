@@ -14,7 +14,7 @@ public interface UserService {
 
     void removeUserById(long id);
 
-    List<User> getAllUsers() throws SQLException;
+    List<User> getAllUsers();
 
     void cleanUsersTable();
 }

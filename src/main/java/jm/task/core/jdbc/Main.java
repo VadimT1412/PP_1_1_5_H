@@ -13,11 +13,7 @@ public class Main {
         userService.saveUser("Name2", "LastName2", (byte) 25);
         userService.saveUser("Name3", "LastName3", (byte) 31);
         userService.saveUser("Name4", "LastName4", (byte) 38);
-        try {
-            userService.getAllUsers();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        userService.getAllUsers();
         userService.cleanUsersTable();
         userService.dropUsersTable();
     }
